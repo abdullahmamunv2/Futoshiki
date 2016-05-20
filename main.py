@@ -1,5 +1,6 @@
 
 from Node import node
+from futoshikigame import futoshikigame
 
 class Futoshiki(object):
 
@@ -34,11 +35,9 @@ for i in range(0,len(board)):
 			col.append(node(domain,(-1,-1),i,j))
 	gameBoard.append(col)
 	col=[]
+f=futoshikigame(gameBoard,domain,constraint)
+f.play()
 
-"""for i in range(0,len(gameBoard)):
-	for j in range(0,len(gameBoard[0])):
-		print gameBoard[i][j].value,
-	print """""
 
 
 

@@ -13,11 +13,11 @@ class node(object):
 	def addItem(self,item):
 		self.domain.append(item)
 	def __str__(self):
-		return "value ",self.value," row ",self.row," col ",self.col
+		return str(self.value)
 
 
 	########### least-constraining value (LCV) ############
-	def oredingValue(self,board):
+	def orderingValue(self,board):
 		neighbourPosition=self.__getneighbourPosition(board)
 		maxeliminate=100
 		eliminate=[]
@@ -26,7 +26,7 @@ class node(object):
 			for nei in neighbourPosition:
 				row,col=nei
 				try:
-					i = board[row][col].index(val)
+					i = board[row][col].domain.index(val)
 					eli_count+=1
 				except ValueError:
 					pass
@@ -52,8 +52,8 @@ class node(object):
 			if i < len(domainSize)-1:
 				rowC,colC=domainSize[i+1][1]
 				if len(board[row][col].domain) == len(board[rowC][colC].domain):
-					length=__getneighbourPosition(board,Row=row,Col=col)
-					lengthC=__getneighbourPosition(board,Row=rowC,Col=colC)
+					length=self.__getneighbourPosition(board,Row=row,Col=col)
+					lengthC=self.__getneighbourPosition(board,Row=rowC,Col=colC)
 					if length > lengthC :
 						domainSize[i+1],domainSize[i]=domainSize[i],domainSize[i+1]
 
@@ -61,28 +61,40 @@ class node(object):
 			orderedVariable.append(i[1])
 		return orderedVariable
 
-
+	def deleteFromNeiDomain(self,board,value):
+		neighbourPosition=self.__getneighbourPosition(board)
+		for nei in neighbourPosition:
+			row,col=nei
+			try:
+				board[row][col].domain.remove(value)
+			except ValueError:
+				pass
+	def AppendToNeiDomain(self,board,value):
+		neighbourPosition=self.__getneighbourPosition(board)
+		for nei in neighbourPosition:
+			row,col=nei
+			board[row][col].domain.append(value)
 
 			
 
 	def __getneighbourPosition(self,board,Row=-1,Col=-1):
-		x_update=[0,0,1,-1]
-		y_update=[1,-1,0,0]
+		row_update=[0,0,1,-1]
+		col_update=[1,-1,0,0]
 		neighbour=[]
 		for i in range(0,4):
 			row=None
 			col=None
-			if Row!=-1:
-				row=self.row+x_update[i]
-				col=self.col+y_update[i]
+			parent=None
+			if Row==-1:
+				row=self.row+row_update[i]
+				col=self.col+col_update[i]
 			else:
-				row=Row+x_update[i]
-				col=Col+y_update[i]
-
+				row=Row+row_update[i]
+				col=Col+col_update[i]
 			############## check grid cell position valid or not ############
-			if row >=0 and row < len(board) and col>=0 and len(board[0]):
+			if row >=0 and row < len(board) and col>=0 and col<len(board[0]):
 				############## make sure that parent is not neighbour ############
-				if row!=parent[0] and col!=parent[1] and board[row][col].value==0:
+				if board[row][col].value==0:
 					neighbour.append((row,col))
 		return neighbour
 
