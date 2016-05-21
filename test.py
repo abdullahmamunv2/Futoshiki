@@ -9,14 +9,9 @@ except ValueError:
 pprint(a)
 
 
-try:
-    import Queue as Q  # ver. < 3.0
-except ImportError:
-    import queue as Q
-
-q = Q.PriorityQueue()
-q.put((3,(3,3)))
-q.put((1,(3,3)))
-q.put((2,(3,3)))
-while not q.empty():
-	print q.get(),
+a=[1,1,1,2]
+for i,val in iter(a):
+	print i,val
+print a
+b=list(a)
+print b
