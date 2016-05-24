@@ -9,9 +9,14 @@ except ValueError:
 pprint(a)
 
 
-a=[1,1,1,2]
-for i,val in iter(a):
-	print i,val
-print a
-b=list(a)
-print b
+def createGenerator():
+	mylist = range(3)
+	for i in mylist:
+		yield i*i
+mygenerator = createGenerator()
+for i in mygenerator:
+	print(i)
+for i in mygenerator:
+	print(i)
+a=['1']
+print map(int,a)
